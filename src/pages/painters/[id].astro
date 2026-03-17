@@ -24,7 +24,7 @@ const nameFr = nameLines[1] || '';
 const aliasParts = painter.alias.match(/^(.+?)（(.+?)）$/);
 const aliasJa = aliasParts ? aliasParts[1] : painter.alias;
 const aliasFr = aliasParts ? aliasParts[2] : '';
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 ---
 <BaseLayout title={`${painter.name} — 印象派美術館`}>
   <MuseumHeader compact />
