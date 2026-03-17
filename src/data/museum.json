@@ -1052,7 +1052,7 @@
       "no": 67,
       "painter": "ジュリアン・メルシエ",
       "titleFr": "L'Artiste devant son Chevalet",
-      "titleJa": "イーゼルの前の芸術家",
+      "titleJa": "自画像",
       "year": 1882,
       "medium": "油彩・カンヴァス",
       "size": "81 x 65 cm",
@@ -1201,6 +1201,42 @@
       "size": "54 × 65 cm",
       "collection": "家族肖像ギャラリー、第9室",
       "description": "四歳の小さな男の子が木製の椅子の途中で立ち上がり、ジャムで汚れた頬と悪気のない目で、キッチンテーブルの下の生姜猫に手を伸ばしている楽しく活気のあるシーン。半分食べられたタルティーヌと危なく傾く牛乳のカップが彼の放棄されたスナックの証。ボネーはこの一瞬の小児の混乱を子どもの落ち着きのない活力を反映する迅速で活発な筆致で凍結する。温かい国のキッチンはゴールデン・オーカーと素朴な茶色で表現され、田舎の小児期の無秩序さへの深い愛情とやさしいユーモアの瞬間をフレーム化する。"
+    },
+    {
+      "no": 81,
+      "painter": "ジュリアン・メルシエ",
+      "titleFr": "L'Atelier de la Rue Lepic, Soir d'Été",
+      "titleJa": "ルピック通りのアトリエ、夏の夕べ",
+      "year": 1882,
+      "medium": "油彩・カンヴァス",
+      "size": "130 × 195 cm",
+      "collection": "印象派美術館・パリ本館",
+      "description": "雨の降る夏の夕べ、メルシエのモンマルトルのアトリエに画家仲間が集う。窓を伝う雨粒がパリの屋根を灰紫色のにじみに変え、室内にも湿った霞が漂う。手前のソファに腰かけた女性画家のスケッチする姿が最も鮮明に描かれ、奥に進むにつれ、イーゼルの前でパイプをくゆらす髭の男や壁の絵を眺める人影は、大気の中に徐々に溶けていく——メルシエが霧の風景画で用いる大気遠近法を室内に応用した手法である。窓から差す冷たい灰紫の外光と、テーブルのオイルランプの琥珀色が交差し、人物や画材の上で微妙に色を変える。雨に濡れた外套や傘が入口に積まれ、床には絵の具のチューブとパレットが散らばる。「雨の画家」の名にふさわしく、親密な交流の場面すら天候と大気の表現として捉えた、メルシエの貴重な群像作品である。",
+      "prompt": "A large-format 1882 Impressionist oil painting depicting a painter's atelier in Montmartre, Paris on a summer evening. Six figures — male and female artists — are gathered casually in a spacious studio filled with easels, canvases, and art supplies. Golden evening light streams through tall west-facing windows, illuminating the scene warmly. One woman sits on a sofa in the foreground sketching, while a bearded man stands near an easel smoking a pipe. Others are engaged in conversation, examining paintings on the wall, or mixing paints. The walls are hung with small paintings by different hands. Paint tubes, palettes, and rags are scattered on the floor. The atmosphere is intimate and collegial, capturing the creative camaraderie of the Impressionist circle. Style: warm palette of golds, ochres, soft greens, with cool purple shadows. Loose Impressionist brushwork with attention to light effects on figures and studio objects. Similar in composition and spirit to Frédéric Bazille's 'L'Atelier de la rue La Condamine' (1870). Canvas proportions approximately 2:3 landscape orientation."
+    },
+    {
+      "no": 82,
+      "painter": "マティルド・ボノー",
+      "titleFr": "La Famille Thibault, Dimanche Après-midi",
+      "titleJa": "ティボー家の日曜の午後",
+      "year": 1894,
+      "medium": "油彩・カンヴァス",
+      "size": "100 × 130 cm",
+      "collection": "エタンプ美術館・イル＝ド＝フランス",
+      "description": "ボースの広大な農地が地平線まで続く日曜の午後。画面の上三分の二を占める高い空には淡い雲が浮かび、下三分の一には収穫を終えた金色の畑が広がる——ボノーの干し草作りや市場の画と同じ、大地と空の壮大な構図である。その広漠とした風景の中、画面やや手前の大きなリンゴの木の下に三世代の家族が身を寄せている。白髪の祖母が編み物をし、若い母が乳児を抱え、幼い娘が猫と戯れる。奥では父と祖父がテーブルを片付け、ワインの瓶とパンの残りが見える。木洩れ日が人物に斑模様の光を落とすが、背景には金色の畑、遠くの教会の尖塔、ポプラの並木が霞む。家族の親密な集まりと果てしない大地の対比が、農村の絆の温もりと大地への帰属を同時に伝えている。パレットナイフによる厚塗りの大地と太い筆の人物描写が、ボノーの力強い画風を存分に示す作品である。",
+      "prompt": "An 1894 Impressionist oil painting of a three-generation French peasant family gathered in a farmyard on a Sunday afternoon. A white-haired grandmother sits in a wooden chair under an apple tree, knitting needles in her lap, smiling gently. Beside her, a young mother holds an infant while a small girl of about five plays with a tabby cat at their feet. In the background, a father and grandfather clear a rustic outdoor dining table, with a wine bottle and bread remnants visible. Dappled sunlight filters through apple tree leaves, creating patches of warm light on the figures. The palette is earthy and warm — browns, muted greens, cream whites, with touches of faded blue in clothing. Brushwork is loose but attentive to the warmth of human connection. The mood is peaceful, familial, tender — a celebration of rural family bonds. Style: similar to Berthe Morisot's intimate family scenes combined with Pissarro's rural sensibility. Canvas proportions approximately 3:4 landscape orientation."
+    },
+    {
+      "no": 83,
+      "painter": "エドゥアール・ドラクロワ",
+      "titleFr": "Les Repasseuses, Lumière de Gaz",
+      "titleJa": "アイロンをかける女たち、ガス灯の下で",
+      "year": 1887,
+      "medium": "油彩・カンヴァス",
+      "size": "81 × 100 cm",
+      "collection": "モンマルトル美術館・パリ",
+      "description": "深夜のパリの洗濯屋。ガス灯の黄色い光の下、二人の洗濯女がアイロン台に向かっている。手前の女性は疲労した表情でアイロンを押し当て、その動作の重さが肩と腕の線に表れている。奥のもう一人は大きく欠伸をしながら、ワインの瓶に手を伸ばしている。テーブルの上には畳まれたシャツの山と、使い古された霧吹きが転がる。蒸気がガス灯の光に照らされて、室内に薄い靄を作り出している。暗い背景に対してガス灯の暖かい光が人物と白い洗濯物を浮かび上がらせ、労働の過酷さと日常の一瞬を同時に捉えている。ドガの同名作品への明確なオマージュでありながら、ドラクロワ特有の夜間光の処理が独自の詩情を与えている。",
+      "prompt": "An 1887 Impressionist oil painting of two laundresses working late at night in a Parisian laundry shop, lit by gaslight. The scene captures a candid, Degas-like moment. In the foreground, one woman presses heavily on an iron, her fatigue visible in the tension of her shoulders and arms, her face weary. Behind her, a second woman yawns widely while reaching for a wine bottle on the table. The ironing table is cluttered with folded white shirts, a worn spray bottle, and fabric. Steam from the irons catches the yellow gaslight, creating a thin haze in the room. The background is dark — deep blues and purples — while the gaslight creates a warm pool of yellow-orange light that illuminates the figures and white laundry dramatically. The composition is asymmetric and captures a fleeting moment of exhaustion and mundane reality. Style: strong chiaroscuro, warm artificial light against cool shadows, loose expressive brushwork. Direct homage to Degas' 'Les Repasseuses' (1884) but with the artist's distinctive nocturnal light treatment. Canvas proportions approximately 4:5 landscape orientation."
     }
   ]
 }
