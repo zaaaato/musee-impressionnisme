@@ -10,10 +10,11 @@ interface Props {
   firstArtworkNo: number;
 }
 const { no, name, alias, birthYear, deathYear, birthPlace, specialty, firstArtworkNo } = Astro.props;
-const imgSrc = `/images/artwork_${String(firstArtworkNo).padStart(2, '0')}.jpg`;
+const base = import.meta.env.BASE_URL;
+const imgSrc = `${base}images/artwork_${String(firstArtworkNo).padStart(2, '0')}.jpg`;
 const aliasShort = alias.split('（')[0];
 ---
-<a href={`/painters/${no}/`} class="painter-card">
+<a href={`${base}painters/${no}/`} class="painter-card">
   <div class="card-image">
     <img src={imgSrc} alt={name} loading="lazy" />
     <div class="card-overlay"></div>

@@ -3,9 +3,10 @@ interface Props {
   compact?: boolean;
 }
 const { compact = false } = Astro.props;
+const base = import.meta.env.BASE_URL;
 ---
 <header class:list={["museum-header", { compact }]}>
-  <a href="/gallery/" class="header-logo">
+  <a href={`${base}gallery/`} class="header-logo">
     <span class="logo-fr">Musée de l'Impressionnisme</span>
     <span class="logo-ja">印象派美術館</span>
   </a>

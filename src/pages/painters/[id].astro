@@ -24,6 +24,7 @@ const nameFr = nameLines[1] || '';
 const aliasParts = painter.alias.match(/^(.+?)（(.+?)）$/);
 const aliasJa = aliasParts ? aliasParts[1] : painter.alias;
 const aliasFr = aliasParts ? aliasParts[2] : '';
+const base = import.meta.env.BASE_URL;
 ---
 <BaseLayout title={`${painter.name} — 印象派美術館`}>
   <MuseumHeader compact />
@@ -31,8 +32,8 @@ const aliasFr = aliasParts ? aliasParts[2] : '';
   <div class="painter-page page-content">
     <div class="container">
       <Breadcrumb items={[
-        { label: '美術館入口', href: '/' },
-        { label: 'ギャラリーホール', href: '/gallery/' },
+        { label: '美術館入口', href: base },
+        { label: 'ギャラリーホール', href: `${base}gallery/` },
         { label: painter.name }
       ]} />
 
@@ -40,7 +41,7 @@ const aliasFr = aliasParts ? aliasParts[2] : '';
         <div class="painter-hero-inner">
           <div class="painter-portrait">
             <img
-              src={`/images/artwork_${String(artworks[0]?.no || 1).padStart(2, '0')}.jpg`}
+              src={`${base}images/artwork_${String(artworks[0]?.no || 1).padStart(2, '0')}.jpg`}
               alt={painter.name}
             />
           </div>

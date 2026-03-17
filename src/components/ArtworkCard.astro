@@ -8,9 +8,10 @@ interface Props {
   painterNo: number;
 }
 const { no, titleJa, titleFr, year, medium, painterNo } = Astro.props;
-const imgSrc = `/images/artwork_${String(no).padStart(2, '0')}.jpg`;
+const base = import.meta.env.BASE_URL;
+const imgSrc = `${base}images/artwork_${String(no).padStart(2, '0')}.jpg`;
 ---
-<a href={`/painters/${painterNo}/artworks/${no}/`} class="artwork-card">
+<a href={`${base}painters/${painterNo}/artworks/${no}/`} class="artwork-card">
   <div class="artwork-image">
     <img src={imgSrc} alt={titleJa} loading="lazy" />
   </div>

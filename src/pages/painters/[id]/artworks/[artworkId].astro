@@ -19,7 +19,8 @@ export function getStaticPaths() {
 }
 
 const { painter, artwork, painterArtworks } = Astro.props;
-const imgSrc = `/images/artwork_${String(artwork.no).padStart(2, '0')}.jpg`;
+const base = import.meta.env.BASE_URL;
+const imgSrc = `${base}images/artwork_${String(artwork.no).padStart(2, '0')}.jpg`;
 
 const currentIdx = painterArtworks.findIndex((a: any) => a.no === artwork.no);
 const prevArt = currentIdx > 0 ? painterArtworks[currentIdx - 1] : null;
@@ -31,9 +32,9 @@ const nextArt = currentIdx < painterArtworks.length - 1 ? painterArtworks[curren
   <div class="artwork-page page-content">
     <div class="container">
       <Breadcrumb items={[
-        { label: '美術館入口', href: '/' },
-        { label: 'ギャラリーホール', href: '/gallery/' },
-        { label: painter.name, href: `/painters/${painter.no}/` },
+        { label: '美術館入口', href: base },
+        { label: 'ギャラリーホール', href: `${base}gallery/` },
+        { label: painter.name, href: `${base}painters/${painter.no}/` },
         { label: artwork.titleJa }
       ]} />
 
@@ -82,7 +83,7 @@ const nextArt = currentIdx < painterArtworks.length - 1 ? painterArtworks[curren
 
       <nav class="artwork-nav">
         {prevArt ? (
-          <a href={`/painters/${painter.no}/artworks/${prevArt.no}/`} class="nav-link prev">
+          <a href={`${base}painters/${painter.no}/artworks/${prevArt.no}/`} class="nav-link prev">
             <span class="nav-arrow">←</span>
             <span class="nav-label">
               <span class="nav-direction">前の作品</span>
@@ -91,12 +92,12 @@ const nextArt = currentIdx < painterArtworks.length - 1 ? painterArtworks[curren
           </a>
         ) : <div />}
 
-        <a href={`/painters/${painter.no}/`} class="nav-link back">
+        <a href={`${base}painters/${painter.no}/`} class="nav-link back">
           作品一覧に戻る
         </a>
 
         {nextArt ? (
-          <a href={`/painters/${painter.no}/artworks/${nextArt.no}/`} class="nav-link next">
+          <a href={`${base}painters/${painter.no}/artworks/${nextArt.no}/`} class="nav-link next">
             <span class="nav-label">
               <span class="nav-direction">次の作品</span>
               <span class="nav-title">{nextArt.titleJa}</span>
