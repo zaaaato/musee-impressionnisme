@@ -1,0 +1,282 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MuseumHeader from '../../components/MuseumHeader.astro';
+import Breadcrumb from '../../components/Breadcrumb.astro';
+import ArtworkCard from '../../components/ArtworkCard.astro';
+import museumData from '../../data/museum.json';
+
+export function getStaticPaths() {
+  return museumData.painters.map(p => ({
+    params: { id: String(p.no) },
+    props: { painter: p }
+  }));
+}
+
+const { painter } = Astro.props;
+const artworks = museumData.artworks.filter(a => a.painter === painter.name);
+
+// Parse Japanese and French names
+const nameLines = painter.fullName ? painter.fullName.split('\n') : [painter.name, ''];
+const nameJa = nameLines[0] || painter.name;
+const nameFr = nameLines[1] || '';
+
+// Parse alias
+const aliasParts = painter.alias.match(/^(.+?)（(.+?)）$/);
+const aliasJa = aliasParts ? aliasParts[1] : painter.alias;
+const aliasFr = aliasParts ? aliasParts[2] : '';
+---
+<BaseLayout title={`${painter.name} — 印象派美術館`}>
+  <MuseumHeader compact />
+
+  <div class="painter-page page-content">
+    <div class="container">
+      <Breadcrumb items={[
+        { label: '美術館入口', href: '/' },
+        { label: 'ギャラリーホール', href: '/gallery/' },
+        { label: painter.name }
+      ]} />
+
+      <section class="painter-hero">
+        <div class="painter-hero-inner">
+          <div class="painter-portrait">
+            <img
+              src={`/images/artwork_${String(artworks[0]?.no || 1).padStart(2, '0')}.jpg`}
+              alt={painter.name}
+            />
+          </div>
+          <div class="painter-info">
+            <p class="painter-alias">{aliasJa}</p>
+            {aliasFr && <p class="painter-alias-fr">{aliasFr}</p>}
+            <h1 class="painter-name">{nameJa}</h1>
+            {nameFr && <p class="painter-name-fr">{nameFr}</p>}
+            <div class="painter-meta-row">
+              <span class="meta-item">{painter.birthYear}–{painter.deathYear}</span>
+              <span class="meta-sep">·</span>
+              <span class="meta-item">{painter.birthPlace} → {painter.deathPlace}</span>
+            </div>
+            <div class="painter-tags">
+              <span class="tag">{painter.specialty}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="painter-details">
+        <div class="details-grid">
+          <div class="detail-section">
+            <h2 class="section-title">略歴 <span class="section-title-fr">Biographie</span></h2>
+            <p class="detail-text">{painter.bio}</p>
+          </div>
+
+          <div class="detail-section">
+            <h2 class="section-title">画風 <span class="section-title-fr">Style artistique</span></h2>
+            <p class="detail-text">{painter.style}</p>
+          </div>
+
+          <div class="detail-sidebar">
+            <div class="sidebar-block">
+              <h3 class="sidebar-title">印象派展出品歴</h3>
+              <p class="sidebar-text">{painter.exhibitions}</p>
+            </div>
+            <div class="sidebar-block">
+              <h3 class="sidebar-title">交友関係</h3>
+              <p class="sidebar-text">{painter.realFriends}。{painter.fictFriends}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="painter-works">
+        <h2 class="works-title">
+          作品一覧
+          <span class="works-title-fr">Collection — {artworks.length} œuvres</span>
+        </h2>
+        <div class="works-grid">
+          {artworks.map(a => (
+            <ArtworkCard
+              no={a.no}
+              titleJa={a.titleJa}
+              titleFr={a.titleFr}
+              year={a.year}
+              medium={a.medium}
+              painterNo={painter.no}
+            />
+          ))}
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .painter-page { padding-bottom: 4rem; }
+
+  /* Hero */
+  .painter-hero {
+    padding: 1rem 0 3rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 3rem;
+  }
+  .painter-hero-inner {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+  }
+  .painter-portrait {
+    flex-shrink: 0;
+    width: 280px;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+  }
+  .painter-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .painter-info { flex: 1; padding-top: 0.5rem; }
+  .painter-alias {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.1rem;
+  }
+  .painter-alias-fr {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--gold-dim);
+    margin-bottom: 0.8rem;
+  }
+  .painter-name {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1.25;
+    margin-bottom: 0.2rem;
+  }
+  .painter-name-fr {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--cream-dim);
+    margin-bottom: 1rem;
+  }
+  .painter-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.85rem;
+    color: var(--taupe);
+    margin-bottom: 1rem;
+  }
+  .meta-sep { color: var(--text-muted); }
+  .painter-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    font-size: 0.78rem;
+    color: var(--cream-dim);
+    border: 1px solid var(--border);
+    padding: 0.3rem 0.8rem;
+    border-radius: 2px;
+    line-height: 1.4;
+  }
+
+  /* Details */
+  .details-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+  }
+  .detail-section { margin-bottom: 2.5rem; }
+  .section-title {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-title-fr {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--taupe);
+    font-size: 0.9rem;
+    margin-left: 0.8rem;
+  }
+  .detail-text {
+    font-size: 0.9rem;
+    color: var(--cream-dim);
+    line-height: 1.9;
+  }
+
+  .detail-sidebar { grid-column: 2; grid-row: 1 / 3; }
+  .sidebar-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 1.2rem 1.4rem;
+    margin-bottom: 1.2rem;
+    border-radius: 3px;
+  }
+  .sidebar-title {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+  .sidebar-text {
+    font-size: 0.82rem;
+    color: var(--cream-dim);
+    line-height: 1.7;
+  }
+
+  /* Works */
+  .painter-works {
+    margin-top: 3rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .works-title {
+    font-family: var(--font-serif);
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 2rem;
+  }
+  .works-title-fr {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--taupe);
+    font-size: 0.9rem;
+    margin-left: 0.8rem;
+  }
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.8rem;
+  }
+
+  @media (max-width: 960px) {
+    .details-grid { grid-template-columns: 1fr; }
+    .detail-sidebar { grid-column: 1; grid-row: auto; }
+    .painter-hero-inner { flex-direction: column; gap: 1.5rem; }
+    .painter-portrait { width: 100%; max-width: 400px; }
+  }
+  @media (max-width: 768px) {
+    .works-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+    .container { padding: 0 1.2rem; }
+    .painter-name { font-size: 1.6rem; }
+  }
+  @media (max-width: 480px) {
+    .works-grid { grid-template-columns: 1fr; }
+  }
+</style>

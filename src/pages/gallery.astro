@@ -1,0 +1,119 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import MuseumHeader from '../components/MuseumHeader.astro';
+import PainterCard from '../components/PainterCard.astro';
+import museumData from '../data/museum.json';
+
+const painters = museumData.painters;
+const artworks = museumData.artworks;
+
+// Find first artwork number for each painter
+function getFirstArtwork(painterName: string): number {
+  const painterWorks = artworks.filter(a => a.painter === painterName);
+  if (painterWorks.length === 0) return 1;
+  return painterWorks.reduce((min, a) => a.no < min ? a.no : min, painterWorks[0].no);
+}
+---
+<BaseLayout title="ギャラリーホール — 印象派美術館">
+  <MuseumHeader compact />
+
+  <div class="gallery-page page-content">
+    <div class="container">
+      <div class="gallery-header">
+        <h1 class="gallery-title">Galerie des Peintres</h1>
+        <p class="gallery-title-ja">画家たちの回廊</p>
+        <p class="gallery-desc">20人の印象派画家たち。それぞれの部屋で、彼らの人生と作品に触れてください。</p>
+      </div>
+
+      <div class="painters-grid">
+        {painters.map(p => (
+          <PainterCard
+            no={p.no}
+            name={p.name}
+            alias={p.alias}
+            birthYear={p.birthYear}
+            deathYear={p.deathYear}
+            birthPlace={p.birthPlace}
+            specialty={p.specialty}
+            firstArtworkNo={getFirstArtwork(p.name)}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <footer class="gallery-footer">
+    <p>Musée de l'Impressionnisme — 印象派美術館</p>
+  </footer>
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .gallery-page {
+    min-height: calc(100vh - 80px);
+    padding-bottom: 4rem;
+  }
+  .gallery-header {
+    text-align: center;
+    padding: 3.5rem 0 3rem;
+  }
+  .gallery-title {
+    font-family: var(--font-serif);
+    font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    margin-bottom: 0.3rem;
+  }
+  .gallery-title-ja {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--cream-dim);
+    letter-spacing: 0.25em;
+    margin-bottom: 1.2rem;
+  }
+  .gallery-desc {
+    font-size: 0.9rem;
+    color: var(--taupe);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  .painters-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.8rem;
+  }
+
+  @media (max-width: 1024px) {
+    .painters-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 768px) {
+    .painters-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+    .container { padding: 0 1.2rem; }
+  }
+  @media (max-width: 480px) {
+    .painters-grid { grid-template-columns: 1fr; }
+  }
+
+  .gallery-footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--taupe);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.85rem;
+  }
+  .footer-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+</style>

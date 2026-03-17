@@ -1,0 +1,298 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import MuseumHeader from '../../../../components/MuseumHeader.astro';
+import Breadcrumb from '../../../../components/Breadcrumb.astro';
+import museumData from '../../../../data/museum.json';
+
+export function getStaticPaths() {
+  const paths: any[] = [];
+  for (const painter of museumData.painters) {
+    const painterArtworks = museumData.artworks.filter(a => a.painter === painter.name);
+    for (const artwork of painterArtworks) {
+      paths.push({
+        params: { id: String(painter.no), artworkId: String(artwork.no) },
+        props: { painter, artwork, painterArtworks }
+      });
+    }
+  }
+  return paths;
+}
+
+const { painter, artwork, painterArtworks } = Astro.props;
+const imgSrc = `/images/artwork_${String(artwork.no).padStart(2, '0')}.jpg`;
+
+const currentIdx = painterArtworks.findIndex((a: any) => a.no === artwork.no);
+const prevArt = currentIdx > 0 ? painterArtworks[currentIdx - 1] : null;
+const nextArt = currentIdx < painterArtworks.length - 1 ? painterArtworks[currentIdx + 1] : null;
+---
+<BaseLayout title={`${artwork.titleJa} — ${painter.name} — 印象派美術館`}>
+  <MuseumHeader compact />
+
+  <div class="artwork-page page-content">
+    <div class="container">
+      <Breadcrumb items={[
+        { label: '美術館入口', href: '/' },
+        { label: 'ギャラリーホール', href: '/gallery/' },
+        { label: painter.name, href: `/painters/${painter.no}/` },
+        { label: artwork.titleJa }
+      ]} />
+
+      <div class="artwork-viewer">
+        <div class="artwork-image-area">
+          <img src={imgSrc} alt={artwork.titleJa} class="artwork-main-img" />
+        </div>
+
+        <aside class="wall-label">
+          <div class="label-inner">
+            <h1 class="label-title">{artwork.titleJa}</h1>
+            <p class="label-title-fr">{artwork.titleFr}</p>
+
+            <div class="label-divider"></div>
+
+            <p class="label-painter">{painter.name}</p>
+            <p class="label-painter-fr">{painter.fullName?.split('\n')[1] || ''}</p>
+
+            <div class="label-meta">
+              <div class="meta-row">
+                <span class="meta-label">制作年</span>
+                <span class="meta-value">{artwork.year}年</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-label">技法</span>
+                <span class="meta-value">{artwork.medium}</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-label">寸法</span>
+                <span class="meta-value">{artwork.size}</span>
+              </div>
+              <div class="meta-row">
+                <span class="meta-label">所蔵</span>
+                <span class="meta-value">{artwork.collection}</span>
+              </div>
+            </div>
+
+            {artwork.description && (
+              <div class="label-description">
+                <p>{artwork.description}</p>
+              </div>
+            )}
+          </div>
+        </aside>
+      </div>
+
+      <nav class="artwork-nav">
+        {prevArt ? (
+          <a href={`/painters/${painter.no}/artworks/${prevArt.no}/`} class="nav-link prev">
+            <span class="nav-arrow">←</span>
+            <span class="nav-label">
+              <span class="nav-direction">前の作品</span>
+              <span class="nav-title">{prevArt.titleJa}</span>
+            </span>
+          </a>
+        ) : <div />}
+
+        <a href={`/painters/${painter.no}/`} class="nav-link back">
+          作品一覧に戻る
+        </a>
+
+        {nextArt ? (
+          <a href={`/painters/${painter.no}/artworks/${nextArt.no}/`} class="nav-link next">
+            <span class="nav-label">
+              <span class="nav-direction">次の作品</span>
+              <span class="nav-title">{nextArt.titleJa}</span>
+            </span>
+            <span class="nav-arrow">→</span>
+          </a>
+        ) : <div />}
+      </nav>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .artwork-page { padding-bottom: 3rem; }
+
+  /* Viewer Layout */
+  .artwork-viewer {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 3rem;
+    margin-top: 1rem;
+    align-items: start;
+  }
+
+  /* Image Area */
+  .artwork-image-area {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background: var(--bg-primary);
+    border-radius: 3px;
+    padding: 2rem;
+    min-height: 400px;
+  }
+  .artwork-main-img {
+    max-width: 100%;
+    max-height: 75vh;
+    object-fit: contain;
+    border-radius: 2px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3);
+  }
+
+  /* Wall Label */
+  .wall-label {
+    position: sticky;
+    top: 90px;
+  }
+  .label-inner {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 2rem 2rem 2.2rem;
+    border-radius: 3px;
+  }
+  .label-title {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--cream);
+    line-height: 1.35;
+    margin-bottom: 0.3rem;
+  }
+  .label-title-fr {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold-dim);
+    line-height: 1.4;
+    margin-bottom: 0;
+  }
+  .label-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--gold-dim);
+    margin: 1.2rem 0;
+    opacity: 0.5;
+  }
+  .label-painter {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--gold);
+    margin-bottom: 0.1rem;
+  }
+  .label-painter-fr {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--taupe);
+    margin-bottom: 1.2rem;
+  }
+  .label-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .meta-row {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .meta-label {
+    color: var(--taupe);
+    min-width: 3.5rem;
+    flex-shrink: 0;
+  }
+  .meta-value { color: var(--cream-dim); }
+
+  .label-description {
+    border-top: 1px solid var(--border);
+    padding-top: 1.2rem;
+  }
+  .label-description p {
+    font-size: 0.87rem;
+    color: var(--cream-dim);
+    line-height: 1.9;
+  }
+
+  /* Navigation */
+  .artwork-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    gap: 1rem;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    text-decoration: none;
+    color: var(--cream-dim);
+    transition: all 0.3s ease;
+    max-width: 300px;
+  }
+  .nav-link:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card);
+    color: var(--cream);
+  }
+  .nav-link.back {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--taupe);
+    border: none;
+  }
+  .nav-link.back:hover { color: var(--gold); background: none; }
+  .nav-arrow {
+    color: var(--gold-dim);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .nav-label { display: flex; flex-direction: column; }
+  .nav-direction {
+    font-size: 0.72rem;
+    color: var(--taupe);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .nav-title {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .nav-link.next .nav-label { text-align: right; }
+
+  @media (max-width: 960px) {
+    .artwork-viewer {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .wall-label { position: static; }
+    .artwork-image-area { padding: 1.5rem; }
+  }
+  @media (max-width: 768px) {
+    .container { padding: 0 1.2rem; }
+    .artwork-nav { flex-direction: column; align-items: stretch; }
+    .nav-link { max-width: 100%; justify-content: center; }
+    .nav-link.back { text-align: center; }
+    .artwork-image-area { padding: 1rem; }
+    .label-title { font-size: 1.3rem; }
+  }
+</style>

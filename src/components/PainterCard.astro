@@ -1,0 +1,99 @@
+---
+interface Props {
+  no: number;
+  name: string;
+  alias: string;
+  birthYear: number;
+  deathYear: number;
+  birthPlace: string;
+  specialty: string;
+  firstArtworkNo: number;
+}
+const { no, name, alias, birthYear, deathYear, birthPlace, specialty, firstArtworkNo } = Astro.props;
+const imgSrc = `/images/artwork_${String(firstArtworkNo).padStart(2, '0')}.jpg`;
+const aliasShort = alias.split('（')[0];
+---
+<a href={`/painters/${no}/`} class="painter-card">
+  <div class="card-image">
+    <img src={imgSrc} alt={name} loading="lazy" />
+    <div class="card-overlay"></div>
+  </div>
+  <div class="card-body">
+    <h3 class="card-name">{name}</h3>
+    <p class="card-alias">{aliasShort}</p>
+    <p class="card-meta">{birthYear}–{deathYear} | {birthPlace}</p>
+    <p class="card-specialty">{specialty}</p>
+  </div>
+</a>
+
+<style>
+  .painter-card {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    text-decoration: none;
+    color: var(--cream);
+  }
+  .painter-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(201,169,89,0.2);
+    background: var(--bg-card-hover);
+  }
+  .card-image {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+  .painter-card:hover .card-image img {
+    transform: scale(1.05);
+  }
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(17,17,34,0.7) 0%, transparent 50%);
+  }
+  .card-body {
+    padding: 1.2rem 1.4rem 1.4rem;
+  }
+  .card-name {
+    font-family: var(--font-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--cream);
+    margin-bottom: 0.25rem;
+    line-height: 1.3;
+  }
+  .card-alias {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .card-meta {
+    font-size: 0.78rem;
+    color: var(--taupe);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.4rem;
+  }
+  .card-specialty {
+    font-size: 0.8rem;
+    color: var(--cream-dim);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

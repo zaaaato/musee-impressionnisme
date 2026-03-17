@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Musée de l'Impressionnisme — 印象派美術館">
+  <main class="entrance">
+    <div class="hero-bg">
+      <img src="/images/artwork_01.jpg" alt="" class="hero-image" />
+      <div class="hero-overlay"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-ornament top">✦</div>
+      <h1 class="hero-title-fr">Musée de l'Impressionnisme</h1>
+      <div class="hero-line"></div>
+      <h2 class="hero-title-ja">印象派美術館</h2>
+      <p class="hero-subtitle">20人の画家たちが遺した80の印象派作品</p>
+      <p class="hero-subtitle-fr">Vingt peintres · Quatre-vingts œuvres impressionnistes</p>
+      <div class="hero-ornament bottom">✦</div>
+      <a href="/gallery/" class="enter-btn">
+        <span class="enter-text">Entrer</span>
+        <span class="enter-arrow">→</span>
+      </a>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .entrance {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(3px) brightness(0.35);
+    transform: scale(1.05);
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(17,17,34,0.4) 0%, rgba(17,17,34,0.85) 70%);
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 2rem;
+    animation: heroFadeIn 1.5s ease-out;
+  }
+  @keyframes heroFadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-ornament {
+    color: var(--gold-dim);
+    font-size: 1.2rem;
+    letter-spacing: 1em;
+    opacity: 0.5;
+  }
+  .hero-ornament.top { margin-bottom: 2rem; }
+  .hero-ornament.bottom { margin-top: 2rem; margin-bottom: 2.5rem; }
+  .hero-title-fr {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 4.5vw, 3.5rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--gold);
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+  .hero-line {
+    width: 80px;
+    height: 1px;
+    background: var(--gold-dim);
+    margin: 0 auto 1rem;
+    opacity: 0.6;
+  }
+  .hero-title-ja {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: 0.3em;
+    margin-bottom: 1.5rem;
+  }
+  .hero-subtitle {
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    color: var(--cream-dim);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+  }
+  .hero-subtitle-fr {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--taupe);
+    letter-spacing: 0.04em;
+  }
+  .enter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 2.8rem;
+    border: 1px solid var(--gold-dim);
+    color: var(--gold);
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    font-style: italic;
+    letter-spacing: 0.15em;
+    transition: all 0.4s ease;
+    text-decoration: none;
+  }
+  .enter-btn:hover {
+    background: rgba(201, 169, 89, 0.1);
+    border-color: var(--gold);
+    color: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(201, 169, 89, 0.15);
+  }
+  .enter-arrow {
+    transition: transform 0.3s ease;
+  }
+  .enter-btn:hover .enter-arrow {
+    transform: translateX(4px);
+  }
+</style>

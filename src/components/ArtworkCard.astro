@@ -1,0 +1,79 @@
+---
+interface Props {
+  no: number;
+  titleJa: string;
+  titleFr: string;
+  year: number;
+  medium: string;
+  painterNo: number;
+}
+const { no, titleJa, titleFr, year, medium, painterNo } = Astro.props;
+const imgSrc = `/images/artwork_${String(no).padStart(2, '0')}.jpg`;
+---
+<a href={`/painters/${painterNo}/artworks/${no}/`} class="artwork-card">
+  <div class="artwork-image">
+    <img src={imgSrc} alt={titleJa} loading="lazy" />
+  </div>
+  <div class="artwork-info">
+    <h4 class="artwork-title">{titleJa}</h4>
+    <p class="artwork-title-fr">{titleFr}</p>
+    <p class="artwork-meta">{year}年 | {medium}</p>
+  </div>
+</a>
+
+<style>
+  .artwork-card {
+    display: block;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    text-decoration: none;
+    color: var(--cream);
+  }
+  .artwork-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  }
+  .artwork-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--bg-deep);
+  }
+  .artwork-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  .artwork-card:hover .artwork-image img {
+    transform: scale(1.04);
+  }
+  .artwork-info {
+    padding: 1rem 1.2rem 1.2rem;
+  }
+  .artwork-title {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 0.2rem;
+    line-height: 1.35;
+  }
+  .artwork-title-fr {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--gold-dim);
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+  .artwork-meta {
+    font-size: 0.75rem;
+    color: var(--taupe);
+    letter-spacing: 0.03em;
+  }
+</style>
