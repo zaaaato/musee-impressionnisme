@@ -3,7 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import MuseumHeader from '../../components/MuseumHeader.astro';
 import Breadcrumb from '../../components/Breadcrumb.astro';
 import ArtworkCard from '../../components/ArtworkCard.astro';
+import BiographyModal from '../../components/BiographyModal.astro';
 import museumData from '../../data/museum.json';
+import biographyData from '../../data/biographies.json';
 
 export function getStaticPaths() {
   return museumData.painters.map(p => ({
@@ -15,6 +17,12 @@ export function getStaticPaths() {
 const { painter } = Astro.props;
 const artworks = museumData.artworks.filter(a => a.painter === painter.name);
 
+// Prev/Next painters
+const allPainters = museumData.painters;
+const currentIdx = allPainters.findIndex((p: any) => p.no === painter.no);
+const prevPainter = currentIdx > 0 ? allPainters[currentIdx - 1] : null;
+const nextPainter = currentIdx < allPainters.length - 1 ? allPainters[currentIdx + 1] : null;
+
 // Parse Japanese and French names
 const nameLines = painter.fullName ? painter.fullName.split('\n') : [painter.name, ''];
 const nameJa = nameLines[0] || painter.name;
@@ -25,6 +33,9 @@ const aliasParts = painter.alias.match(/^(.+?)（(.+?)）$/);
 const aliasJa = aliasParts ? aliasParts[1] : painter.alias;
 const aliasFr = aliasParts ? aliasParts[2] : '';
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+// Biography data
+const bio = (biographyData as Record<string, any>)[painter.name];
 ---
 <BaseLayout title={`${painter.name} — 印象派美術館`}>
   <MuseumHeader compact />
@@ -87,6 +98,14 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
         </div>
       </section>
 
+      {bio && (
+        <BiographyModal
+          painterName={painter.name}
+          intro={bio.intro}
+          sections={bio.sections}
+        />
+      )}
+
       <section class="painter-works">
         <h2 class="works-title">
           作品一覧
@@ -105,6 +124,38 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
           ))}
         </div>
       </section>
+
+      <nav class="painter-nav">
+        <div class="nav-slot prev-slot">
+          {prevPainter && (
+            <a href={`${base}painters/${prevPainter.no}/`} class="nav-link prev">
+              <span class="nav-arrow">←</span>
+              <span class="nav-label">
+                <span class="nav-direction">前の画家</span>
+                <span class="nav-title">{prevPainter.name}</span>
+              </span>
+            </a>
+          )}
+        </div>
+
+        <div class="nav-slot center-slot">
+          <a href={`${base}gallery/`} class="nav-link back">
+            ギャラリーに戻る
+          </a>
+        </div>
+
+        <div class="nav-slot next-slot">
+          {nextPainter && (
+            <a href={`${base}painters/${nextPainter.no}/`} class="nav-link next">
+              <span class="nav-label">
+                <span class="nav-direction">次の画家</span>
+                <span class="nav-title">{nextPainter.name}</span>
+              </span>
+              <span class="nav-arrow">→</span>
+            </a>
+          )}
+        </div>
+      </nav>
     </div>
   </div>
 </BaseLayout>
@@ -266,6 +317,76 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
     gap: 1.8rem;
   }
 
+  /* Painter Navigation */
+  .painter-nav {
+    display: flex;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    gap: 1rem;
+  }
+  .nav-slot {
+    flex: 1;
+    min-width: 0;
+  }
+  .nav-slot.center-slot {
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-slot.next-slot {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.8rem 1.2rem;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    text-decoration: none;
+    color: var(--cream-dim);
+    transition: all 0.3s ease;
+    max-width: 300px;
+  }
+  .nav-link:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-card);
+    color: var(--cream);
+  }
+  .nav-link.back {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9rem;
+    color: var(--taupe);
+    border: none;
+  }
+  .nav-link.back:hover { color: var(--gold); background: none; }
+  .nav-arrow {
+    color: var(--gold-dim);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .nav-label { display: flex; flex-direction: column; }
+  .nav-direction {
+    font-size: 0.72rem;
+    color: var(--taupe);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .nav-title {
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .nav-link.next .nav-label { text-align: right; }
+
   @media (max-width: 960px) {
     .details-grid { grid-template-columns: 1fr; }
     .detail-sidebar { grid-column: 1; grid-row: auto; }
@@ -276,6 +397,12 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
     .works-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
     .container { padding: 0 1.2rem; }
     .painter-name { font-size: 1.6rem; }
+    .painter-nav { flex-direction: column; align-items: stretch; }
+    .nav-slot { flex: none; }
+    .nav-slot.center-slot { justify-content: center; }
+    .nav-slot.next-slot { justify-content: center; }
+    .nav-link { max-width: 100%; justify-content: center; }
+    .nav-link.back { text-align: center; }
   }
   @media (max-width: 480px) {
     .works-grid { grid-template-columns: 1fr; }

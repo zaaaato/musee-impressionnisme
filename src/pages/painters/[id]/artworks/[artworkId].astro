@@ -62,10 +62,12 @@ const nextArt = currentIdx < painterArtworks.length - 1 ? painterArtworks[curren
                 <span class="meta-label">技法</span>
                 <span class="meta-value">{artwork.medium}</span>
               </div>
+              {/* 寸法は画像と合っていないため非表示
               <div class="meta-row">
                 <span class="meta-label">寸法</span>
                 <span class="meta-value">{artwork.size}</span>
               </div>
+              */}
               <div class="meta-row">
                 <span class="meta-label">所蔵</span>
                 <span class="meta-value">{artwork.collection}</span>
@@ -82,29 +84,35 @@ const nextArt = currentIdx < painterArtworks.length - 1 ? painterArtworks[curren
       </div>
 
       <nav class="artwork-nav">
-        {prevArt ? (
-          <a href={`${base}painters/${painter.no}/artworks/${prevArt.no}/`} class="nav-link prev">
-            <span class="nav-arrow">←</span>
-            <span class="nav-label">
-              <span class="nav-direction">前の作品</span>
-              <span class="nav-title">{prevArt.titleJa}</span>
-            </span>
-          </a>
-        ) : <div />}
+        <div class="nav-slot prev-slot">
+          {prevArt && (
+            <a href={`${base}painters/${painter.no}/artworks/${prevArt.no}/`} class="nav-link prev">
+              <span class="nav-arrow">←</span>
+              <span class="nav-label">
+                <span class="nav-direction">前の作品</span>
+                <span class="nav-title">{prevArt.titleJa}</span>
+              </span>
+            </a>
+          )}
+        </div>
 
-        <a href={`${base}painters/${painter.no}/`} class="nav-link back">
-          作品一覧に戻る
-        </a>
-
-        {nextArt ? (
-          <a href={`${base}painters/${painter.no}/artworks/${nextArt.no}/`} class="nav-link next">
-            <span class="nav-label">
-              <span class="nav-direction">次の作品</span>
-              <span class="nav-title">{nextArt.titleJa}</span>
-            </span>
-            <span class="nav-arrow">→</span>
+        <div class="nav-slot center-slot">
+          <a href={`${base}painters/${painter.no}/`} class="nav-link back">
+            作品一覧に戻る
           </a>
-        ) : <div />}
+        </div>
+
+        <div class="nav-slot next-slot">
+          {nextArt && (
+            <a href={`${base}painters/${painter.no}/artworks/${nextArt.no}/`} class="nav-link next">
+              <span class="nav-label">
+                <span class="nav-direction">次の作品</span>
+                <span class="nav-title">{nextArt.titleJa}</span>
+              </span>
+              <span class="nav-arrow">→</span>
+            </a>
+          )}
+        </div>
       </nav>
     </div>
   </div>
@@ -225,12 +233,24 @@ const nextArt = currentIdx < painterArtworks.length - 1 ? painterArtworks[curren
   /* Navigation */
   .artwork-nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-top: 3rem;
     padding-top: 2rem;
     border-top: 1px solid var(--border);
     gap: 1rem;
+  }
+  .nav-slot {
+    flex: 1;
+    min-width: 0;
+  }
+  .nav-slot.center-slot {
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-slot.next-slot {
+    display: flex;
+    justify-content: flex-end;
   }
   .nav-link {
     display: flex;
@@ -291,6 +311,9 @@ const nextArt = currentIdx < painterArtworks.length - 1 ? painterArtworks[curren
   @media (max-width: 768px) {
     .container { padding: 0 1.2rem; }
     .artwork-nav { flex-direction: column; align-items: stretch; }
+    .nav-slot { flex: none; }
+    .nav-slot.center-slot { justify-content: center; }
+    .nav-slot.next-slot { justify-content: center; }
     .nav-link { max-width: 100%; justify-content: center; }
     .nav-link.back { text-align: center; }
     .artwork-image-area { padding: 1rem; }

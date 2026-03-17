@@ -1,0 +1,241 @@
+---
+interface BiographySection {
+  title: string;
+  content: string;
+  subsections?: { title: string; content: string }[];
+}
+
+interface Props {
+  painterName: string;
+  intro: string;
+  sections: BiographySection[];
+}
+
+const { painterName, intro, sections } = Astro.props;
+---
+<button class="bio-open-btn" id="bioOpenBtn">
+  <span class="bio-btn-icon">📖</span>
+  <span class="bio-btn-text">詳しく知る</span>
+  <span class="bio-btn-sub">En savoir plus</span>
+</button>
+
+<div class="bio-modal-overlay" id="bioModal">
+  <div class="bio-modal">
+    <div class="bio-modal-header">
+      <h2 class="bio-modal-title">{painterName}</h2>
+      <button class="bio-close-btn" id="bioCloseBtn">×</button>
+    </div>
+    <div class="bio-modal-body">
+      <div class="bio-intro" set:html={intro.replace(/\n/g, '<br/>')} />
+
+      {sections.map(section => (
+        <div class="bio-section">
+          <h3 class="bio-section-title">{section.title}</h3>
+          {section.subsections && section.subsections.length > 0 ? (
+            section.subsections.map(sub => (
+              <div class="bio-subsection">
+                <h4 class="bio-subsection-title">{sub.title}</h4>
+                <div class="bio-text" set:html={sub.content.replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')} />
+              </div>
+            ))
+          ) : (
+            <div class="bio-text" set:html={section.content.replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')} />
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const openBtn = document.getElementById('bioOpenBtn');
+  const modal = document.getElementById('bioModal');
+  const closeBtn = document.getElementById('bioCloseBtn');
+
+  openBtn?.addEventListener('click', () => {
+    modal?.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  });
+
+  closeBtn?.addEventListener('click', () => {
+    modal?.classList.remove('active');
+    document.body.style.overflow = '';
+  });
+
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+</script>
+
+<style>
+  /* Open Button */
+  .bio-open-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    border: 1px solid var(--gold-dim);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin: 2rem auto 0;
+  }
+  .bio-open-btn:hover {
+    background: rgba(201, 169, 89, 0.1);
+    border-color: var(--gold);
+    transform: translateY(-1px);
+  }
+  .bio-btn-icon { font-size: 1.2rem; }
+  .bio-btn-text {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+  }
+  .bio-btn-sub {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.78rem;
+    color: var(--taupe);
+  }
+
+  /* Modal Overlay */
+  .bio-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    padding: 2rem;
+  }
+  .bio-modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Modal */
+  .bio-modal {
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    max-width: 820px;
+    width: 100%;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px);
+    transition: transform 0.35s ease;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  }
+  .bio-modal-overlay.active .bio-modal {
+    transform: translateY(0);
+  }
+
+  /* Header */
+  .bio-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .bio-modal-title {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--cream);
+  }
+  .bio-close-btn {
+    background: none;
+    border: none;
+    color: var(--taupe);
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0.2rem 0.6rem;
+    transition: color 0.3s;
+    line-height: 1;
+  }
+  .bio-close-btn:hover { color: var(--cream); }
+
+  /* Body */
+  .bio-modal-body {
+    padding: 2rem;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .bio-modal-body::-webkit-scrollbar { width: 6px; }
+  .bio-modal-body::-webkit-scrollbar-track { background: transparent; }
+  .bio-modal-body::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 3px; }
+
+  .bio-intro {
+    font-size: 0.92rem;
+    color: var(--cream-dim);
+    line-height: 1.85;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Sections */
+  .bio-section {
+    margin-bottom: 2rem;
+  }
+  .bio-section-title {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .bio-subsection {
+    margin-bottom: 1.5rem;
+  }
+  .bio-subsection-title {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 0.6rem;
+  }
+  .bio-text {
+    font-size: 0.88rem;
+    color: var(--cream-dim);
+    line-height: 1.9;
+  }
+  .bio-text :global(p) {
+    margin-bottom: 0.8rem;
+  }
+  .bio-text :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .bio-modal-overlay { padding: 1rem; }
+    .bio-modal { max-height: 90vh; }
+    .bio-modal-header { padding: 1.2rem 1.5rem; }
+    .bio-modal-body { padding: 1.5rem; }
+    .bio-modal-title { font-size: 1.2rem; }
+  }
+</style>
