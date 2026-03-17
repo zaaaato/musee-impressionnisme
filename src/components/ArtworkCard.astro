@@ -9,7 +9,7 @@ interface Props {
 }
 const { no, titleJa, titleFr, year, medium, painterNo } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const imgSrc = `${base}images/artwork_${String(no).padStart(2, '0')}.jpg`;
+const imgSrc = `${base}images/thumbnails/artwork_${String(no).padStart(2, '0')}.jpg`;
 ---
 <a href={`${base}painters/${painterNo}/artworks/${no}/`} class="artwork-card">
   <div class="artwork-image">

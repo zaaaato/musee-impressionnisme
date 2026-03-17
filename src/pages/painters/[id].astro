@@ -52,7 +52,7 @@ const bio = (biographyData as Record<string, any>)[painter.name];
         <div class="painter-hero-inner">
           <div class="painter-portrait">
             <img
-              src={`${base}images/artwork_${String(artworks[0]?.no || 1).padStart(2, '0')}.jpg`}
+              src={`${base}images/thumbnails/artwork_${String(artworks[0]?.no || 1).padStart(2, '0')}.jpg`}
               alt={painter.name}
             />
           </div>

@@ -20,7 +20,8 @@ export function getStaticPaths() {
 
 const { painter, artwork, painterArtworks } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-const imgSrc = `${base}images/artwork_${String(artwork.no).padStart(2, '0')}.jpg`;
+const imgThumb = `${base}images/thumbnails/artwork_${String(artwork.no).padStart(2, '0')}.jpg`;
+const imgFull = `${base}images/full/artwork_${String(artwork.no).padStart(2, '0')}.png`;
 
 const currentIdx = painterArtworks.findIndex((a: any) => a.no === artwork.no);
 const prevArt = currentIdx > 0 ? painterArtworks[currentIdx - 1] : null;
@@ -40,7 +41,7 @@ const nextArt = currentIdx < painterArtworks.length - 1 ? painterArtworks[curren
 
       <div class="artwork-viewer">
         <div class="artwork-image-area">
-          <img src={imgSrc} alt={artwork.titleJa} class="artwork-main-img" />
+          <img src={imgFull} alt={artwork.titleJa} class="artwork-main-img" />
         </div>
 
         <aside class="wall-label">
