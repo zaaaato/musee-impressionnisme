@@ -12,6 +12,12 @@ interface Props {
 }
 
 const { painterName, intro, sections } = Astro.props;
+
+function md(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+}
 ---
 <button class="bio-open-btn" id="bioOpenBtn">
   <span class="bio-btn-text">詳しく知る</span>
@@ -25,7 +31,7 @@ const { painterName, intro, sections } = Astro.props;
       <button class="bio-close-btn" id="bioCloseBtn">×</button>
     </div>
     <div class="bio-modal-body">
-      <div class="bio-intro" set:html={intro.replace(/\n/g, '<br/>')} />
+      <div class="bio-intro" set:html={md(intro).replace(/\n/g, '<br/>')} />
 
       {sections.map(section => (
         <div class="bio-section">
@@ -34,11 +40,11 @@ const { painterName, intro, sections } = Astro.props;
             section.subsections.map(sub => (
               <div class="bio-subsection">
                 <h4 class="bio-subsection-title">{sub.title}</h4>
-                <div class="bio-text" set:html={sub.content.replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')} />
+                <div class="bio-text" set:html={md(sub.content).replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')} />
               </div>
             ))
           ) : (
-            <div class="bio-text" set:html={section.content.replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')} />
+            <div class="bio-text" set:html={md(section.content).replace(/\n\n/g, '</p><p>').replace(/^/, '<p>').replace(/$/, '</p>')} />
           )}
         </div>
       ))}
